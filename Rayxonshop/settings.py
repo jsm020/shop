@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-57!!x=ppbnuetn)r+d-#g)@v_kpru0_$=1kp9b7+1+n)6gwtav
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://shop-5cek.onrender.com', "localhost"]
 
 
 # Application definition
@@ -187,8 +187,5 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',  # Har qanday so'rovni qabul qilish
         'rest_framework.permissions.DjangoModelPermissions',  # Ma'lumot obyektlari uchun to'liq CRUD operatsiyalariga ruxsat berish
-    ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',  # JWT autentifikatsiya uchun
     ],
 }
