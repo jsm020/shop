@@ -26,7 +26,9 @@ SECRET_KEY = 'django-insecure-57!!x=ppbnuetn)r+d-#g)@v_kpru0_$=1kp9b7+1+n)6gwtav
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://shop-5cek.onrender.com', "localhost"]
+# settings.py
+
+ALLOWED_HOSTS = ['shop-5cek.onrender.com', '127.0.0.1', 'localhost']
 
 
 # Application definition
