@@ -185,9 +185,8 @@ JAZZMIN_SETTINGS = {
 # settings.py
 
 # Django REST Framework ni sozlashlarini import qiling
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',  # Har qanday so'rovni qabul qilish
-        'rest_framework.permissions.DjangoModelPermissions',  # Ma'lumot obyektlari uchun to'liq CRUD operatsiyalariga ruxsat berish
-    ],
-}
+# REST_FRAMEWORK = {
+#     'DEFAULT_PERMISSION_CLASSES': [
+#         'rest_framework.permissions.AllowAny',  # Har qanday so'rovni qabul qilish
+#     ],
+# }
