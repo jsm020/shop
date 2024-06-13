@@ -50,6 +50,8 @@ urlpatterns = [
     path('api/perfumery/', include('perfumery.urls')),
     path('api/shoes/', include('shoes.urls')),
     path('api/wristwatch/', include('wristwatch.urls')),
+    path('api/users/', include('userlar.urls')),
+
 
 
 ]

@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
-
+import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -30,12 +30,21 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['shop-5cek.onrender.com', '127.0.0.1', 'localhost']
 
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:5500",
+    "http://localhost:5500",
+    # Boshqa ruxsat berilgan domenlarni shu yerga qo'shing
+]
+
 
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'jazzmin',
     'rest_framework',
+    'corsheaders',
     'drf_yasg',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,14 +53,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'dress',
+    "userlar",
     'shoes',
     'perfumery',
     'wristwatch',
     'handbag',
     'bijuteriya',
     'boshqa',
-    'main'
-
+    'main',
 ]
 
 MIDDLEWARE = [
@@ -63,6 +72,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+
+    
 ]
 
 ROOT_URLCONF = 'Rayxonshop.urls'
@@ -83,18 +95,28 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Rayxonshop.wsgi.application'
-
+ASGI_APPLICATION = 'Rayxonshop.asgi.application'
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+       'default': {
+           'ENGINE': 'django.db.backends.postgresql_psycopg2',
+           'NAME': 'telegrambot',
+           'USER': 'postgres',
+           'PASSWORD': 'new_password',
+           'HOST': 'localhost',
+           'PORT': '',  # PostgreSQL uchun standart port 5432 bo'ladi, bo'sh qoldirilsa ham to'g'ri ishlaydi
+       }
+   }
+
+# DATABASES['default'] = dj_database_url.parse("postgres://telegrambot_repo_user:LKNH2fwKlQEHTm71Jni76BpzczXc8qdn@dpg-cph8hhgcmk4c73ecmpj0-a.oregon-postgres.render.com/telegrambot_repo")
 
 
 # Password validation
@@ -121,8 +143,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
-
+TIME_ZONE = 'Asia/Tashkent'
 USE_I18N = True
 
 USE_TZ = True
@@ -185,11 +206,3 @@ JAZZMIN_SETTINGS = {
     "changeform_format_overrides": {"auth.user": "collapsible", "auth.group": "vertical_tabs"},
     "language_chooser": False,
 }
-# settings.py
-
-# Django REST Framework ni sozlashlarini import qiling
-# REST_FRAMEWORK = {
-#     'DEFAULT_PERMISSION_CLASSES': [
-#         'rest_framework.permissions.AllowAny',  # Har qanday so'rovni qabul qilish
-#     ],
-# }

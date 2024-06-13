@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block title %}
+{{user.first_name}}
+{% endblock title %}
+{% block content %}
+<div class="chat">
+    <div class="chat-header clearfix">
+      <img style="width: 50px; height: 50px;border-radius: 50%;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStCJpmc7wNF8Ti2Tuh_hcIRZUGOc23KBTx2A&s" alt="avatar" />
+      
+      <div class="chat-about">
+        <div class="chat-with">{{user.first_name}}</div>
+        <div class="chat-num-messages">Welcome</div>
+      </div>
+      <i class="fa fa-star"></i>
+    </div> <!-- end chat-header -->
+    
+    <div class="chat-history">
+      <ul id="chat-messages">      
+      </ul>
+      
+    </div> <!-- end chat-history -->
+    
+    <div class="chat-message clearfix">
+      <input name="message-to-send" id="chat-message-input" placeholder ="Type your message"></input>
+              
+      <i class="fa fa-file-o"></i> &nbsp;&nbsp;&nbsp;
+      <i class="fa fa-file-image-o"></i>
+      
+      <button id="chat-message-submit">Send</button>
+
+    </div> <!-- end chat-message -->
+    
+  </div> <!-- end chat -->
+  <script>
+    const roomName = `{{chatgroup.name}}`;
+    const user_id = `{{request.user.id}}`
+    const userName = `{{request.user}}`
+    console.log(userName)
+    const chat_messages = document.getElementById("chat-messages")
+
+    const chatSocket = new WebSocket(
+        'ws://'
+        + window.location.host
+        + '/ws/chat/'
+        + roomName
+        + '/'
+    );
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        var myMessageHtml = `
+        <li class="clearfix">
+          <div class="message-data align-right">
+            <span class="message-data-time">` + data.time + `</span> &nbsp; &nbsp;
+            <span class="message-data-name">`+userName + `</span> <i class="fa fa-circle me"></i>
+          </div>
+          <div class="message other-message float-right">
+            ` + data.message + `
+          </div>
+        </li>`;
+        var chatMessageHtml = 
+        `<li>
+          <div class="message-data">
+            <span class="message-data-name"><i class="fa fa-circle online"></i> Vincent</span>
+            <span class="message-data-time">`+ data.time + `</span>
+          </div>
+          <div class="message my-message">
+            `+data.message +`
+          </div>
+        </li>`
+        if (data.sender_id == user_id){
+          messageHtml = myMessageHtml
+        }else{
+          messageHtml=chatMessageHtml
+        };
+        chat_messages.innerHTML += messageHtml
+        console.log(data)
+    };
+
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+    document.querySelector('#chat-message-input').focus();
+    document.querySelector('#chat-message-input').onkeyup = function(e) {
+        if (e.key === 'Enter') {  // enter, return
+            document.querySelector('#chat-message-submit').click();
+        }
+    };
+
+    document.querySelector('#chat-message-submit').onclick = function(e) {
+        const messageInputDom = document.querySelector('#chat-message-input');
+        const message = messageInputDom.value;
+        chatSocket.send(JSON.stringify({
+            'message': message,
+            "sender_id": user_id
+        }));
+        messageInputDom.value = '';
+    };
+</script>
+{% endblock content %}
